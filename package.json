@@ -1,0 +1,21 @@
+{
+  "name": "sausedemo",
+  "version": "1.0.0",
+  "description": "Автоматизация тестирования на примере сайта Swag Labs",
+  "main": "index.js",
+  "scripts": {
+    "test": "react-scripts test",
+    "test:cypress": "start-server-and-test dev 3000 cypress:run",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^12.9.0"
+  },
+  "dependencies": {
+    "start-server-and-test": "^2.0.0"
+  }
+}
