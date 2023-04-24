@@ -5,12 +5,12 @@ Cypress.on("uncaught:exception", (err, runnable) => {
 // Вынесла в beforeEach() и записала в session() - авторизацию
 
 beforeEach(() => { 
-  cy.viewport(1600, 1000);
-  cy.visit("/");
-  cy.get('[data-test="username"]').should('have.value', '').type('standard_user');
-  cy.get('[data-test="password"]').should('have.value', '').type('secret_sauce');
-  cy.contains('Login').should('be.visible').click();
-  cy.location("pathname").should("eq", '/inventory.html');
+    cy.viewport(1600, 1000);
+    cy.visit("/");
+    cy.get('[data-test="username"]').should('have.value', '').type('standard_user');
+    cy.get('[data-test="password"]').should('have.value', '').type('secret_sauce');
+    cy.contains('Login').should('be.visible').click();
+    cy.location("pathname").should("eq", '/inventory.html');
 });
 
 describe('E2E тесты сайта Sausedemo', function () {
@@ -18,7 +18,7 @@ describe('E2E тесты сайта Sausedemo', function () {
     cy.visit("/");
   });
   // Если необходим запустить только один тест, то нужно добавить only => it.only
-  it('Добавление товаров в корзину', () => {
+  it('Добавление товаров в корзину и оформление покупки', () => {
     // Добавление товара через открытие карточки товара
     cy.contains('Sauce Labs Backpack').click();
     cy.url().should('include', '/inventory-item.html?id=4');
@@ -36,6 +36,16 @@ describe('E2E тесты сайта Sausedemo', function () {
     // Удаление товара из корзины
     cy.get('[data-test=remove-sauce-labs-onesie]').click();
     // Скриншот корзины чтобы убедиться, что товар действительно удален
-    cy.screenshot('Скрин корзины после удаления товара');
+    cy.screenshot('Cypress-project\\sausedemo\\screen');
+    // Проверка товара и завершение покупки
+    cy.get('[data-test="checkout"]').should('be.visible').click();
+    cy.contains('Checkout: Your Information').should('be.visible');
+    cy.get('[data-test="firstName"]').type('Bertie');
+    cy.get('[data-test="lastName"]').type('Botts');
+    cy.get('[data-test="postalCode"]').type('1234');
+    cy.get('[data-test="continue"]').should('be.visible').click();
+    cy.contains('Checkout: Overview').should('be.visible');
+    cy.get('[data-test="finish"]').click();
+    cy.contains('Thank you for your order!').should('be.visible')
   });
 })
